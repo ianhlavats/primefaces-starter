@@ -1,0 +1,510 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:pm="http://primefaces.org/mobile" 
+      xmlns:mycompany="http://java.sun.com/jsf/composite/mycompany" 
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head />
+<body>
+<ui:composition>
+	<f:view contentType="text/html" renderKitId="PRIMEFACES_MOBILE">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{venueController.init}" />
+			<f:event type="preRenderView" listener="#{searchController.init}" />
+			<f:event type="preRenderView" listener="#{eventController.init}" />
+			<f:event type="preRenderView" listener="#{chartController.init}" />
+		</f:metadata>
+		<pm:page title="Welcome">
+			<f:facet name="postinit">
+				<h:outputScript library="primefaces" name="gmap/gmap.js" />
+				<script type="text/javascript" 
+				        src="http://maps.google.com/maps/api/js?sensor=true" />
+                <script type="text/javascript">
+	                //<![CDATA[
+                    function handleMessage(data) {
+                
+                        // append chat messages to output panel 
+                        var chatContent = $(PrimeFaces.escapeClientId('chatForm:chatPanel'));
+                        chatContent.append(data + '<br />');
+                        
+                        //keep scroll
+                        chatContent.scrollTop(chatContent.height());        
+            
+                    } 
+                    
+                    
+                    function clearChatWindow() {
+                        $(PrimeFaces.escapeClientId('chatForm:chatPanel')).empty();	
+                    }
+                    
+                     //]]>
+    	         </script>	
+			</f:facet>
+			<!-- Main View -->
+			<pm:view id="main">
+				<pm:header title="Show Time Guru" swatch="b">
+					<pm:navBar>
+						<p:button value="Home" icon="home" href="#main" 
+						          styleClass="ui-btn-active"/>
+						<p:button value="Info" icon="info" href="#info" />
+						<p:button value="Login" icon="login" href="#login" />
+					</pm:navBar>
+				</pm:header>
+				<pm:content>
+					<ul>
+						<li>
+							Find out what's happening
+						</li>
+						<li>
+							Rate and review shows
+						</li>
+						<li>
+							<p:commandLink value="Join today!" action="pm:join" 
+							               update=":signupForm" 
+							               actionListener="#{signupController.createUser}" />
+						</li>
+					</ul>
+					<h:panelGroup>
+						<p:gmap center="#{searchController.mapCenter}" 
+						        zoom="#{searchController.mapZoom}" type="ROADMAP" 
+						        id="showTimeMap" style="width:100%; height:15em" 
+						        model="#{searchController.searchResultsModel}">
+							<p:ajax event="overlaySelect" 
+							        listener="#{searchController.eventSelected}" />
+							<p:gmapInfoWindow id="infoWindow">
+								<p:outputPanel style="text-align:left;display:block;margin:auto;font-size:12px">
+									<h:panelGrid>
+										<h:outputText value="#{searchController.selectedEvent.title} (#{searchController.selectedEvent.eventType.label})" />
+										<h:outputText value="&#60;br /&#62;" escape="false" />
+										<h:outputText value="#{searchController.selectedEvent.startDate}">
+											<f:convertDateTime pattern="EEEE, MMM d 'at' hh:mm a" />
+										</h:outputText>
+										<h:outputText value="&#60;br /&#62;" escape="false" />
+										<h:outputText value="#{searchController.selectedEvent.venue.name}" />
+										<h:outputText value="&#60;br /&#62;" escape="false" />
+										<h:outputText value="#{searchController.selectedEvent.venue.phoneNumber}" />
+										<h:outputText value="#{searchController.selectedEvent.venue.streetAddress}" />
+										<h:outputText value="#{searchController.selectedEvent.venue.city.name}, #{searchController.selectedEvent.venue.provinceState.name}" />
+									</h:panelGrid>
+								</p:outputPanel>
+							</p:gmapInfoWindow>
+						</p:gmap>
+					</h:panelGroup>
+					<p:separator />
+					<h:form>
+						<h:selectOneMenu value="#{searchController.city}" 
+						                 styleClass="search-input" 
+						                 disabled="#{searchController.provinceState eq null}"
+						                 id="city" 
+						                 style="width:200px; margin-bottom:15px">
+							<f:selectItem itemLabel="Select City" itemValue="#{null}" />
+							<f:selectItems value="#{searchController.citiesForState}" 
+							               var="city" itemLabel="#{city.name}" 
+							               itemValue="#{city}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu value="#{searchController.provinceState}" 
+						                 id="state" style="width:200px">
+							<f:selectItem itemLabel="Select State" itemValue="#{null}" />
+							<f:selectItems value="#{countryController.provinceStates}" 
+							               var="state" itemLabel="#{state.name}" 
+							               itemValue="#{state}" />
+							<p:ajax update="@form" process="@this" />
+						</h:selectOneMenu>
+						<h:selectOneMenu value="#{searchController.eventType}" id="type"
+						                 style="width:200px">
+							<f:selectItem itemLabel="Select Event Type" itemValue="#{null}" />
+							<f:selectItems value="#{eventController.eventTypes}" var="type"
+							               itemLabel="#{type.label}" itemValue="#{type}" />
+						</h:selectOneMenu>
+						<p:commandButton value="Search" update=":showTimeMap,@form" 
+						                 actionListener="#{searchController.search}" />
+					</h:form>
+				</pm:content>
+			</pm:view>
+			<!-- Info View -->
+			<pm:view id="info">
+				<pm:header title="Info" swatch="b">
+					<f:facet name="left">
+						<p:button value="Back" icon="back" href="#main?reverse=true"/>
+					</f:facet>
+				</pm:header>
+				<pm:content>
+					<h:outputText value="We created this app to help you find fun and interesting things to do in your area. We hope you enjoy it!" />
+				</pm:content>
+			</pm:view>
+			<!-- Login View -->
+			<pm:view id="login">
+				<pm:header title="Login" swatch="b">
+					<f:facet name="left">
+						<p:button value="Back" icon="back" href="#main?reverse=true"/>
+					</f:facet>
+				</pm:header>
+				<pm:content>
+					<h:form id="loginForm">
+						<p:messages id="messages" showDetail="false" autoUpdate="true" />
+						<p:inputText id="username" label="Username: " 
+						             value="#{credentials.username}" />
+						<p:outputLabel value="Password: " for="password" />
+						<p:password id="password" label="Password: " 
+						            value="#{credentials.password}" />
+						<p:commandLink value="Forgot your password?" />
+						<p:commandButton value="Login" update=":members" 
+						                 action="#{loginController.loginMobile}" />
+					</h:form>
+				</pm:content>
+			</pm:view>
+			<!-- Join View -->
+			<pm:view id="join">
+				<pm:header title="Join" swatch="b">
+					<f:facet name="left">
+						<p:button value="Back" icon="back" href="#main?reverse=true"/>
+					</f:facet>
+				</pm:header>
+				<pm:content>
+					<h:form id="signupForm">
+						<p:messages id="messages" showDetail="true" autoUpdate="true"/>
+						<p:inputText id="firstname" label="First Name" 
+						             value="#{signupController.user.firstName}" 
+						             required="true" />
+						<p:inputText id="lastname" label="Last Name" 
+						             value="#{signupController.user.lastName}" 
+						             required="true" />
+						<p:inputText id="email" label="Email Address" 
+						             value="#{signupController.user.emailAddress}" 
+						             required="true" />
+						<p:inputText id="phone" label="Phone Number" 
+						             value="#{signupController.user.phoneNumber}" 
+						             required="true" type="tel" />
+						<p:inputText id="username" label="Username" 
+						             value="#{signupController.user.username}" 
+						             required="true" />
+						<p:outputLabel value="Password" for="password" />
+						<p:password id="password" label="Password" 
+						            value="#{signupController.user.password}" 
+						            feedback="false" required="true" match="password2" />
+						<p:outputLabel value="Password (confirm)" for="password" />
+						<p:password id="password2" label="Password (confirm)" 
+						            value="#{signupController.user.password}" 
+						            feedback="false" required="true" />
+						<p:inputText value="#{signupController.user.birthdate}" 
+						             required="true" label="Birthdate">
+							<f:convertDateTime pattern="MMM dd, yyyy" />
+						</p:inputText>
+						<h:panelGroup>
+							<h:outputLabel value="Country" for="country" />
+							<h:selectOneMenu value="#{signupController.user.country}" 
+							                 id="country" required="true">
+								<f:selectItems value="#{countryController.countries}" 
+								               var="country" itemValue="#{country}" 
+								               itemLabel="#{country.name}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:selectBooleanCheckbox required="true" id="terms" 
+							                         value="#{signupController.user.acceptedTerms}" />
+							<h:outputLabel value="I accept the terms and conditions" 
+							               for="terms" />
+						</h:panelGroup>
+						<p:commandButton value="Sign Up" 
+						                 action="#{signupController.signupMobile}" />
+					</h:form>
+				</pm:content>
+			</pm:view>
+			<!-- Members View -->
+			<pm:view id="members">
+				<pm:header title="Members" swatch="b">
+					<f:facet name="left">
+						<p:button value="Back" icon="back" href="#main?reverse=true"/>
+					</f:facet>
+				</pm:header>
+				<pm:content rendered="#{loginController.loggedIn}">
+					<p:dataList>
+						<h:outputLink value="#dashboard">
+							Dashboard
+						</h:outputLink>
+						<h:outputLink value="#venues">
+							Venues
+						</h:outputLink>
+						<h:outputLink value="#shows">
+							Shows
+						</h:outputLink>
+						<h:outputLink value="#reviews">
+							Reviews
+						</h:outputLink>
+						<h:outputLink value="#contacts">
+							Contacts
+						</h:outputLink>
+					</p:dataList>
+					<h:form id="mobileLogout">
+						<p:separator style="margin-bottom:20px;" />
+						<p:commandButton value="Logout" 
+						                 update=":loginForm:username,:loginForm:password"
+						                 action="#{loginController.logoutMobile}" />
+					</h:form>
+				</pm:content>
+			</pm:view>
+			<!-- Dashboard View -->
+			<pm:view id="dashboard">
+				<pm:header title="Dashboard" swatch="b">
+					<f:facet name="left">
+						<p:button value="Back" icon="back" 
+						          href="#members?reverse=true"/>
+					</f:facet>
+				</pm:header>
+				<pm:content rendered="#{loginController.loggedIn}">
+					<h:outputText value="Welcome, #{userController.user.firstName}" />
+					<p:panel id="entertainment" header="Entertainment" 
+					         toggleable="true" closable="true" toggleSpeed="500" 
+					         closeSpeed="500" widgetVar="entertainmentPanelWidget">
+						<p:feedReader value="http://rss.news.yahoo.com/rss/entertainment" var="feed" 
+						              size="1">
+							<h:outputText value="#{feed.title}" 
+							              style="font-weight: bold; display:block"/>
+							<h:outputText value="#{feed.description.value}" 
+							              escape="false"/>
+						</p:feedReader>
+					</p:panel>
+					<p:panel id="weather" header="Weather" toggleable="true" 
+					         closable="true" toggleSpeed="500" closeSpeed="500" 
+					         widgetVar="weatherPanelWidget">
+						<h:outputText value="Weather Content" />
+						<p:feedReader value="http://weather.yahooapis.com/forecastrss?w=2502265" var="feed" 
+						              size="1">
+							<h:outputText value="#{feed.title}" 
+							              style="font-weight: bold; display:block"/>
+							<h:outputText value="#{feed.description.value}" 
+							              escape="false"/>
+						</p:feedReader>
+					</p:panel>
+					<p:panel id="politics" header="Politics" toggleable="true" 
+					         closable="true" toggleSpeed="500" closeSpeed="500" 
+					         widgetVar="politicsPanelWidget">
+						<p:feedReader value="http://rss.news.yahoo.com/rss/politics" 
+						              var="feed" size="1">
+							<h:outputText value="#{feed.title}" 
+							              style="font-weight: bold; display:block"/>
+							<h:outputText value="#{feed.description.value}" 
+							              escape="false"/>
+						</p:feedReader>
+					</p:panel>
+					<p:panel id="sports" header="Sports" toggleable="true" 
+					         closable="true" toggleSpeed="500" closeSpeed="500" 
+					         widgetVar="sportsPanelWidget">
+						<p:feedReader value="http://rss.news.yahoo.com/rss/sports" 
+						              var="feed" size="1">
+							<h:outputText value="#{feed.title}" 
+							              style="font-weight: bold; display:block"/>
+							<h:outputText value="#{feed.description.value}" 
+							              escape="false"/>
+						</p:feedReader>
+					</p:panel>
+				</pm:content>
+			</pm:view>
+			<!-- Venues View -->
+			<pm:view id="venues">
+				<pm:header title="Venues" swatch="b">
+					<f:facet name="left">
+						<p:button value="Back" icon="back" 
+						          href="#members?reverse=true"/>
+					</f:facet>
+				</pm:header>
+				<pm:content rendered="#{loginController.loggedIn}">
+					<h:form id="venueForm">
+						<h:panelGroup>
+							<h:outputLabel value="Select a Venue to Edit" 
+							               for="selectedVenue" />
+							<h:selectOneListbox id="selectedVenue" 
+							                    value="#{venueController.venue}" 
+							                    style="width:275px; height:220px;" 
+							                    valueChangeListener="#{venueController.venueSelected}">
+								<f:selectItems value="#{venueController.venues}" var="venue" 
+								               itemLabel="#{venue.name}" itemValue="#{venue}" />
+								<p:ajax process="@this" update="@form" />
+							</h:selectOneListbox>
+						</h:panelGroup>
+						<p:inputText value="#{venueController.venue.name}" id="name" 
+						             required="true" label="Venue Name" />
+						<p:inputText value="#{venueController.venue.streetAddress}" 
+						             required="true" id="address" label="Venue Street" />
+						<p:inputText value="#{venueController.venue.city.name}" 
+						             id="city" required="true" label="Venue City" />
+						<p:outputLabel value="Phone Number" for="venuePhoneNumber" />
+						<p:inputMask id="venuePhoneNumber" label="Phone Number" 
+						             value="#{venueController.venue.phoneNumber}" 
+						             mask="(999) 999-9999" />
+						<p:separator />
+						<p:outputLabel value="Venue State" for="venueState" />
+						<h:selectOneMenu value="#{venueController.venue.provinceState}" 
+						                 converter="mycompany.EditableStateConverter" 
+						                 id="venueState" style="width:453px" 
+						                 required="true" editable="true" 
+						                 label="Venue State" 
+						                 disabled="#{venueController.venue.country eq null}">
+							<f:param id="countryParam" 
+							         value="#{venueController.venue.country}" />
+							<f:selectItem itemLabel="Select" itemValue="#{null}" />
+							<f:selectItems value="#{countryController.findProvinceStatesByCountry(venueController.venue.country)}"
+							               var="state" itemLabel="#{state.name}" 
+							               itemValue="#{state}" />
+						</h:selectOneMenu>
+						<p:separator style="margin-top:20px" />
+						<p:outputLabel value="Country" for="venueCountry" />
+						<h:selectOneMenu value="#{venueController.venue.country}" 
+						                 id="venueCountry" required="true">
+							<f:selectItem itemLabel="Select" itemValue="#{null}" />
+							<f:selectItems value="#{countryController.countries}" 
+							               var="country" itemValue="#{country}" 
+							               itemLabel="#{country.name}" />
+							<p:ajax update="@form" process="@this" />
+						</h:selectOneMenu>
+						<p:separator style="margin-top:20px; margin-bottom:20px" />
+						<p:commandButton id="newVenueButton" value="New" process="@this"
+						                 update="venueForm" immediate="true" 
+						                 actionListener="#{venueController.newVenue}" />
+						<p:commandButton id="saveVenueButton" value="Save" 
+						                 process="@this,name,address,city,venuePhoneNumber"
+						                 update="venueForm" 
+						                 actionListener="#{venueController.saveVenue}" />
+					</h:form>
+				</pm:content>
+			</pm:view>
+			<!-- Shows View -->
+			<pm:view id="shows">
+				<pm:header title="Shows" swatch="b">
+					<f:facet name="left">
+						<p:button value="Back" icon="back" 
+						          href="#members?reverse=true"/>
+					</f:facet>
+				</pm:header>
+				<pm:content rendered="#{loginController.loggedIn}">
+					<p:dataList value="#{eventController.allEvents}" id="eventList" 
+					            var="event">
+						<p:panel header="#{event.title}">
+							<h:panelGroup style="font-size:1.2em">
+								<h:outputText value="#{event.eventType.label}" />
+								<h:outputText value="&#60;br /&#62;" escape="false" />
+								<h:outputText value="#{event.startDate}">
+									<f:convertDateTime pattern="EEEE, MMMM d 'at' hh:mm a" />
+								</h:outputText>
+								<h:outputText value="&#60;br /&#62;" escape="false" />
+								<h:outputText value="#{event.venue.name}" />
+								<h:outputText value="&#60;br /&#62;" escape="false" />
+								<h:outputText value="#{event.venue.phoneNumber}" />
+								<h:outputText value="&#60;br /&#62;" escape="false" />
+								<h:outputText value="#{event.venue.streetAddress}" />
+								<h:outputText value="&#60;br /&#62;" escape="false" />
+								<h:outputText value="#{event.venue.city.name}, #{event.venue.provinceState.name}" />
+							</h:panelGroup>
+						</p:panel>
+					</p:dataList>
+				</pm:content>
+			</pm:view>
+			<!-- Reviews View -->
+			<pm:view id="reviews">
+				<pm:header title="Reviews" swatch="b">
+					<f:facet name="left">
+						<p:button value="Back" icon="back" 
+						          href="#members?reverse=true"/>
+					</f:facet>
+				</pm:header>
+				<pm:content rendered="#{loginController.loggedIn}">
+					<h:form id="reviewsForm">
+						<p:dataGrid id="reviewsGrid" var="attendance" 
+						            value="#{eventController.allEventsAttendance}" 
+						            columns="1" rows="5" paginator="false">
+							<p:panel id="eventPanel" header="#{attendance.event.title}">
+								<h:outputText value="#{attendance.event.eventType.label}" />
+								<h:outputText value="&#60;br /&#62;" escape="false" />
+								<h:outputText value="#{attendance.event.startDate}">
+									<f:convertDateTime pattern="EEEE, MMM d 'at' h:mm a" />
+								</h:outputText>
+								<h:outputText value="&#60;br /&#62;" escape="false" />
+								<h:outputText value="#{attendance.event.venue.name}" />
+								<h:outputText value="&#60;br /&#62;" escape="false" />
+								<h:outputText value="#{attendance.event.venue.phoneNumber}" />
+								<h:outputText value="&#60;br /&#62;" escape="false" />
+								<h:outputText value="#{attendance.event.venue.streetAddress}" />
+								<h:outputText value="&#60;br /&#62;" escape="false" />
+								<h:outputText value="#{attendance.event.venue.city.name}, #{attendance.event.venue.provinceState.name}" />
+								<p:separator />
+								<p:outputLabel for="attended" value="Did you attend?" />
+								<h:selectOneRadio id="attended" 
+								                  value="#{attendance.confirmed}">
+									<f:selectItem itemLabel="Yes" itemValue="true" />
+									<f:selectItem itemLabel="No" itemValue="false" />
+									<p:ajax update="@form" 
+									        listener="#{eventController.updateAttendance(attendance)}"
+									        process="@this" />
+								</h:selectOneRadio>
+								<p:rating id="rating" value="#{attendance.rating}" stars="5" 
+								          disabled="#{!attendance.confirmed}">
+									<p:ajax process="@this" 
+									        listener="#{eventController.updateAttendance(attendance)}" />
+								</p:rating>
+							</p:panel>
+						</p:dataGrid>
+					</h:form>
+				</pm:content>
+			</pm:view>
+			<!-- Contacts View -->
+			<pm:view id="contacts">
+				<pm:header title="Contacts" swatch="b">
+					<f:facet name="left">
+						<p:button value="Back" icon="back" 
+						          href="#members?reverse=true"/>
+					</f:facet>
+				</pm:header>
+				<pm:content> 
+                	<h:form>
+                        <p:accordionPanel id="contactsPanel">
+                            <p:tab title="Friends">
+                                <mycompany:contactList header="Friends" mobile="true" 
+                                                       value="#{contactsController.friends}" />
+                            </p:tab>                    
+                            <p:tab title="Family">
+                                <mycompany:contactList header="Family" mobile="true" 
+                                                       value="#{contactsController.family}" />
+                            </p:tab>						
+                            <p:tab title="Colleagues">
+                                <mycompany:contactList header="Colleagues" mobile="true" 
+                                                       value="#{contactsController.colleagues}" />
+                            </p:tab>
+                        </p:accordionPanel>
+				        <p:remoteCommand name="beginMobileChat" actionListener="#{chatController.beginChat}" oncomplete="clearChatWindow()"  />                              
+                    </h:form>
+				</pm:content>
+			</pm:view>
+			<!-- Chat View -->
+			<pm:view id="chat">
+              	<h:form>            
+                    <pm:header title="Chat" swatch="b">
+                        <f:facet name="left">
+                                <p:remoteCommand name="endMobileChat" actionListener="#{chatController.endChat}" />                              
+                                <p:button value="Back" icon="back" onclick="endMobileChat()"
+                                          href="#contacts?reverse=true"/>
+                        </f:facet>
+                    </pm:header>
+                </h:form>           	     
+				<pm:content>
+					<h:form id="chatForm" style="text-align:center">                                      
+                        <p:outputPanel id="container">
+                            <h:panelGroup>
+                                <p:outputPanel id="chatPanel" layout="block" style="width:100%;height:220px;overflow:auto; margin-top:10px; margin-bottom:10px" /> 
+                                <p:separator />
+                                <p:inputText value="#{chatController.globalMessage}" styleClass="messageInput" />
+                                <p:commandButton value="Send" actionListener="#{chatController.sendGlobal}" 
+                                         oncomplete="$('.messageInput').val('')" />
+                            </h:panelGroup>
+                        </p:outputPanel> 
+					</h:form>
+                     <p:socket onMessage="handleMessage" channel="/chat" autoConnect="false" widgetVar="socketWidget" />                                     
+				</pm:content>
+			</pm:view>
+		</pm:page>
+	</f:view>
+</ui:composition>
+</body>
+</html>

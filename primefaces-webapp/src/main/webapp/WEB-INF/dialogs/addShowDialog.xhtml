@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html">
+<head />
+<body>
+<ui:composition>
+	<h:form id="addShowDialogForm">
+		<p:dialog header="Add New Show" modal="true" showEffect="fade" 
+		          hideEffect="fade" widgetVar="addShowDialogWidget" width="600" 
+		          position="center" appendToBody="false" height="275" 
+		          draggable="false" resizable="false" id="addShowDialog">
+			<p:messages showDetail="true" autoUpdate="true" id="showMessages" />
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Show Title" for="title" />
+				<p:inputText value="#{eventController.event.title}" id="title" />
+				<p:outputLabel value="Venue" for="venue" />
+				<p:selectOneMenu value="#{eventController.event.venue}" id="venue"
+				                 style="width:200px">
+					<f:selectItem itemLabel="Select" itemValue="#{null}" />
+					<f:selectItems value="#{venueController.venues}" var="venue" 
+					               itemLabel="#{venue.name}" itemValue="#{venue}" />
+				</p:selectOneMenu>
+				<p:outputLabel value="Type" for="eventType" />
+				<p:selectOneMenu value="#{eventController.event.eventType}" 
+				                 id="eventType" style="width:200px">
+					<f:selectItem itemLabel="Select" itemValue="#{null}" />
+					<f:selectItems value="#{eventController.eventTypes}" 
+					               var="eventType" itemLabel="#{eventType.label}" 
+					               itemValue="#{eventType}" />
+				</p:selectOneMenu>
+				<p:outputLabel value="Start Date" for="startDate" />
+				<p:calendar value="#{eventController.event.startDate}" 
+				            navigator="true" id="startDate" required="true" 
+				            pattern="MM/dd/yyyy hh:mm a" />
+				<p:outputLabel value="End Date" for="endDate" />
+				<p:calendar value="#{eventController.event.endDate}" 
+				            navigator="true" id="endDate" required="true" 
+				            pattern="MM/dd/yyyy hh:mm a" />
+			</h:panelGrid>
+			<div style="text-align:center">
+				<p:commandButton id="saveShowButton" value="Save" 
+				                 oncomplete="addShowDialogWidget.hide()" 
+				                 update=":tabView:showsForm" 
+				                 actionListener="#{eventController.saveEvent}" />
+			</div>
+			<p:defaultCommand target="saveShowButton" />
+            <p:hotkey bind="esc" handler="addShowDialogWidget.hide()" />
+		</p:dialog>
+	</h:form>	
+</ui:composition>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:p="http://primefaces.org/ui">
+<head />
+<body>
+<ui:composition>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{chartController.init}" />
+	</f:metadata>
+	<h:form id="dashboardForm">
+		<p:fieldset legend="My Dashboard">
+			<h:panelGrid columns="3" width="100%">
+				<h:outputText value="Welcome, #{userController.user.firstName}" />
+				<p:themeSwitcher value="#{userController.user.theme}" 
+				                 style="width:165px" effect="fade" 
+				                 id="statefulSwitcher">
+					<f:selectItem itemLabel="Select a Theme" itemValue="#{null}" />
+					<f:selectItems value="#{userController.themes}" />
+					<p:ajax listener="#{userController.updateUserTheme}" />
+				</p:themeSwitcher>
+				<p:commandLink id="resetLink" value="Reset" style="float:right" 
+				               onclick="modalStatusWidget.show()" 
+				               oncomplete="showPanels()" update="dashboard" />
+			</h:panelGrid>
+			<p:dashboard model="#{dashboardController.model}" id="dashboard">
+				<p:ajax event="reorder" 
+				        listener="#{dashboardController.handleReorder}" />
+				<p:panel id="events" header="Event Turnout" toggleable="true" 
+				         closable="true" toggleSpeed="500" closeSpeed="500" 
+				         widgetVar="eventsPanelWidget">
+					<p:barChart id="basic" value="#{chartController.barChartModel}" 
+					            rendered="#{chartController.barChartModel ne null}" 
+					            legendPosition="ne" min="0" max="10" 
+					            style="height:200px"/>
+				</p:panel>
+				<p:panel id="entertainment" header="Entertainment" 
+				         toggleable="true" closable="true" toggleSpeed="500" 
+				         closeSpeed="500" widgetVar="entertainmentPanelWidget">
+					<f:facet name="actions">
+						<p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+							<h:outputText styleClass="ui-icon ui-icon-star" />
+							<p:effect type="explode" event="click" for="entertainment" />
+						</p:commandLink>
+					</f:facet>
+					<p:feedReader value="http://rss.news.yahoo.com/rss/entertainment"
+					              var="feed" size="1">
+						<h:outputText value="#{feed.title}" 
+						              style="font-weight: bold; display:block"/>
+						<h:outputText value="#{feed.description.value}" escape="false"/>
+					</p:feedReader>
+				</p:panel>
+				<p:panel id="weather" header="Weather" toggleable="true" 
+				         closable="true" toggleSpeed="500" closeSpeed="500" 
+				         widgetVar="weatherPanelWidget">
+					<h:outputText value="Weather Content" />
+					<p:feedReader value="http://weather.yahooapis.com/forecastrss?w=2502265" var="feed" 
+					              size="1">
+						<h:outputText value="#{feed.title}" 
+						              style="font-weight: bold; display:block"/>
+						<h:outputText value="#{feed.description.value}" escape="false"/>
+					</p:feedReader>
+				</p:panel>
+				<p:panel id="politics" header="Politics" toggleable="true" 
+				         closable="true" toggleSpeed="500" closeSpeed="500" 
+				         widgetVar="politicsPanelWidget">
+					<p:feedReader value="http://rss.news.yahoo.com/rss/politics" 
+					              var="feed" size="1">
+						<h:outputText value="#{feed.title}" 
+						              style="font-weight: bold; display:block"/>
+						<h:outputText value="#{feed.description.value}" escape="false"/>
+					</p:feedReader>
+				</p:panel>
+				<p:panel id="sports" header="Sports" toggleable="true" 
+				         closable="true" toggleSpeed="500" closeSpeed="500" 
+				         widgetVar="sportsPanelWidget">
+					<p:feedReader value="http://rss.news.yahoo.com/rss/sports" 
+					              var="feed" size="1">
+						<h:outputText value="#{feed.title}" 
+						              style="font-weight: bold; display:block"/>
+						<h:outputText value="#{feed.description.value}" escape="false"/>
+					</p:feedReader>
+				</p:panel>
+				<p:panel id="clicks" header="Clicks" toggleable="true" 
+				         closable="true" toggleSpeed="500" closeSpeed="500" 
+				         widgetVar="clicksPanelWidget" style="text-align:center">
+					<p:commandLink id="clickLink" value="Click" 
+					               actionListener="#{userController.handleClick}" 
+					               update="clicks" />
+					<p:pieChart id="votes" value="#{chartController.pieChartModel}" 
+					            style="height:185px" legendPosition="nw" 
+					            legendRows="6" legendCols="1" showDataLabels="true" 
+					            dataFormat="value" />
+				</p:panel>
+			</p:dashboard>
+		</p:fieldset>
+	</h:form>
+</ui:composition>
+</body>
+</html>

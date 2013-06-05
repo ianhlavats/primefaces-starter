@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core">
+<head />
+<body>
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+	<ui:define name="title">
+		Sign Up
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="signupForm" styleClass="input-form">
+			<h:panelGrid columns="2" border="0">
+				<p:panel header="Sign Up" id="panel">
+					<p:messages id="messages" showDetail="true" showSummary="false" 
+					            autoUpdate="true"/>
+					<h:panelGrid columns="2">
+						<p:outputLabel value="First Name" for="firstname" />
+						<p:inputText id="firstname" label="First Name" 
+						             value="#{signupController.user.firstName}" required="true" />
+						<p:outputLabel value="Last Name" for="lastname" />
+						<p:inputText id="lastname" label="Last Name" 
+						             value="#{signupController.user.lastName}" required="true" />
+						<p:outputLabel value="Email Address" for="email" />
+						<p:inputText id="email" label="Email Address" 
+						             value="#{signupController.user.emailAddress}" required="true" />
+						<p:outputLabel value="Phone Number" for="phone" />
+						<p:inputMask id="phone" label="Phone Number" 
+						             value="#{signupController.user.phoneNumber}" required="true" 
+						             mask="(999) 999-9999" />
+						<p:outputLabel value="Username" for="username" />
+						<p:inputText id="username" label="Username" 
+						             value="#{signupController.user.username}" required="true" />
+						<p:outputLabel value="Password" for="password" />
+						<p:password id="password" label="Password" 
+						            value="#{signupController.user.password}" feedback="true" 
+						            required="true" match="password2" />
+						<p:outputLabel value="Confirm" for="password2" />
+						<p:password id="password2" label="Password" 
+						            value="#{signupController.user.password}" feedback="false" 
+						            required="true" />
+						<p:outputLabel value="Gender" for="gender" />
+						<p:selectOneRadio id="gender" style="float:left" required="true" 
+						                  value="#{signupController.user.gender}">
+							<f:selectItems value="#{signupController.genders}" 
+							               itemLabel="#{gender.label}" itemValue="#{gender}" 
+							               var="gender" />
+						</p:selectOneRadio>
+						<p:outputLabel value="Date of birth" for="birthdate" />
+						<p:calendar id="birthdate" value="#{signupController.user.birthdate}" 
+						            navigator="true" required="true" yearRange="c-100:c-0" 
+						            pattern="MM/dd/yyyy" showOn="button" readonlyInput="true" />
+						<p:outputLabel value="Country" for="country" />
+						<p:selectOneMenu value="#{signupController.user.country}" id="country" 
+						                 required="true">
+							<f:selectItems value="#{signupController.countries}" var="country" 
+							               itemValue="#{country}" itemLabel="#{country.name}" />
+						</p:selectOneMenu>
+						<h:outputText value="" />
+						<h:panelGroup>
+							<p:selectBooleanCheckbox required="true" id="terms" 
+							                         label="Accept terms and conditions" 
+							                         value="#{signupController.user.acceptedTerms}" 
+							                         widgetVar="termsCheckboxWidget" />
+							<p:outputLabel value="I accept the terms and conditions" 
+							               onclick="termsCheckboxWidget.toggle()" for="terms" />
+						</h:panelGroup>
+						<p:outputLabel for="captcha" value="Secret Word" />
+						<p:captcha required="true" id="captcha" />
+					</h:panelGrid>
+					<p:commandButton value="Sign Up" action="#{signupController.signup}" 
+					                 style="display:block; margin:0 auto;" ajax="false" />
+				</p:panel>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:mycompany="http://java.sun.com/jsf/composite/mycompany" 
+      xmlns:f="http://java.sun.com/jsf/core">
+<head />
+<body>
+<ui:composition>
+	<f:metadata>
+		<f:event type="preRenderView" 
+		         listener="#{contactsController.init}"/>
+	</f:metadata>
+	<h:form id="contactsForm">
+	    <p:poll update="contactsPanel" interval="10" />    
+		<p:commandLink value="Add Contact" 
+		               actionListener="#{contactsController.newRelationship}"
+		               onclick="newContactDialogWidget.show()" 
+		               update=":chatForm" />
+		<p:accordionPanel id="contactsPanel" multiple="true">
+			<p:tab title="Friends">
+				<mycompany:contactList header="Friends" 
+				                       value="#{contactsController.friends}" />
+			</p:tab>
+			<p:tab title="Family" >
+				<mycompany:contactList header="Family" 
+				                       value="#{contactsController.family}" />
+			</p:tab>            
+			<p:tab title="Colleagues">
+				<mycompany:contactList header="Colleagues" 
+				                       value="#{contactsController.colleagues}" />
+			</p:tab>
+		</p:accordionPanel>	
+	</h:form>
+</ui:composition>
+</body>
+</html>

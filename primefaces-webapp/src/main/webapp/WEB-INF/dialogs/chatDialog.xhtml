@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html">
+<head />
+<body>
+<ui:composition>
+	<h:form id="chatForm">
+		<p:dialog header="Chat" modal="true" showEffect="fade" hideEffect="fade" 
+		          widgetVar="chatDialogWidget" width="700" position="center" 
+		          appendToBody="false" height="400" draggable="true" resizable="false"
+		          id="chatDialog">
+			<h:panelGrid columns="2" columnClasses="chat-text-column,chat-users-column" 
+			             style="width:100%" rendered="#{loginController.loggedIn}">
+				<p:outputPanel id="chatPanel" layout="block" 
+				               styleClass="ui-corner-all ui-widget-content chatlogs"/>
+				<p:dataList id="users" var="user" value="#{activeUsers}" 
+				            styleClass="usersList">
+					<f:facet name="header">
+						Users
+					</f:facet>
+					#{user.username}
+				</p:dataList>
+			</h:panelGrid>
+			<p:separator />
+			<div style="text-align:center;">
+				<p:inputText value="#{chatController.globalMessage}" 
+				             styleClass="messageInput" style="width:300px" />
+				<p:spacer width="5" />
+				<p:commandButton value="Send" actionListener="#{chatController.sendGlobal}" 
+				                 oncomplete="$('.messageInput').val('').focus()"/>
+			</div>
+			<div style="text-align:center">
+				<p:commandButton value="Close" style="margin-top:20px" 
+				                 actionListener="#{chatController.endChat}" 
+				                 onclick="chatDialogWidget.hide()" global="false" />
+			</div>
+		</p:dialog>
+	</h:form>
+	<p:socket onMessage="handleMessage" channel="/chat" autoConnect="false" 
+	          widgetVar="socketWidget" />
+    <script> 
+	//<![CDATA[
+    function handleMessage(data) {
+    
+        // append chat messages to output panel 
+        var chatContent = $(PrimeFaces.escapeClientId('chatForm:chatPanel'));
+        chatContent.append(data + '<br />');
+        
+        //keep scroll
+        chatContent.scrollTop(chatContent.height());        
+    } 
+    //]]>
+    </script>	              
+</ui:composition>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui">
+<head />
+<body>
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+	<ui:define name="title">
+		Members
+	</ui:define> 
+	<ui:define name="content">
+		<p:tabView dynamic="true" cache="false" id="tabView" 
+		           style="width:75%; margin: 0 auto;">
+			<p:tab id="tab1" title="Dashboard">
+				<ui:include src="dashboard.xhtml" />
+			</p:tab>
+			<p:tab id="tab3" title="Venues">
+				<ui:include src="venues.xhtml" />
+			</p:tab>
+			<p:tab id="tab4" title="Shows">
+				<ui:include src="shows.xhtml" />
+			</p:tab>
+			<p:tab id="tab5" title="Reviews">
+				<ui:include src="reviews.xhtml" />
+			</p:tab>
+			<p:tab id="tab6" title="Contacts">
+				<ui:include src="contacts.xhtml" />
+			</p:tab>
+		</p:tabView>
+		<ui:include src="/WEB-INF/dialogs/addShowDialog.xhtml" />
+		<ui:include src="/WEB-INF/dialogs/chatDialog.xhtml" />
+		<ui:include src="/WEB-INF/dialogs/newContactDialog.xhtml" />
+		<ui:include src="/WEB-INF/dialogs/validationDialog.xhtml" />
+	</ui:define>
+</ui:composition>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:mycompany="http://java.sun.com/jsf/composite/mycompany"
+      xmlns:f="http://java.sun.com/jsf/core">
+<head />
+<body>
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+	<ui:define name="title">
+		Ideas
+	</ui:define>
+	<ui:define name="content">
+		<f:metadata>
+			<f:event type="preRenderView" 
+			         listener="#{mindMapController.init}" />
+		</f:metadata>
+		<h:form id="mindMapForm" style="text-align:center">
+			<h:outputText value="Please sign in to post an idea" 
+			              rendered="#{!loginController.loggedIn}" />
+			<p:commandLink value="New Idea" 
+			               actionListener="#{mindMapController.newIdea}"
+			               rendered="#{loginController.loggedIn and mindMapController.root eq null}"
+			               onclick="newIdeaDialogWidget.show()" />
+			<h:outputText value="(Double-click an idea to add another)" 
+			              rendered="#{loginController.loggedIn and mindMapController.root ne null}"
+			              style="margin-left:10px" />
+			<p:mindmap value="#{mindMapController.root}" id="mindMap"
+			           widgetVar="mindMapWidget" 
+			           style="width:80%;height:400px;border:1px solid black; margin:0 auto;">
+				<p:ajax event="select" 
+				        listener="#{mindMapController.onNodeSelect}" />
+				<p:ajax event="dblselect" 
+				        listener="#{mindMapController.onNodeDblselect}" 
+				        oncomplete="newIdeaDialogWidget.show()"/>
+			</p:mindmap>
+			<p:dialog header="Add New Idea" modal="true" 
+			          showEffect="fade" hideEffect="fade" 
+			          widgetVar="newIdeaDialogWidget" width="400" 
+			          height="150" resizable="false" 
+			          id="newIdeaDialog">
+				<p:messages showDetail="true" autoUpdate="true" 
+				            id="messages" />
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Title" for="title" />
+					<p:inputText value="#{mindMapController.newIdea.name}" 
+					             id="title" />
+					<p:outputLabel value="Description" for="description" />
+					<p:inputText value="#{mindMapController.newIdea.description}" 
+					             id="description" />
+				</h:panelGrid>
+				<div style="text-align:center">
+					<p:commandButton value="Save" update="mindMapForm" 
+					                 actionListener="#{mindMapController.saveIdea}"
+					                 oncomplete="newIdeaDialogWidget.hide()" />
+				</div>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

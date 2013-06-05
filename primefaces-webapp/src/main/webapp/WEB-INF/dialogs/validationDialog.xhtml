@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui">
+<head />
+<body>
+<ui:composition>
+	<p:dialog header="Validation Error" modal="true" showEffect="fade" 
+	          hideEffect="fade" widgetVar="validationDialogWidget" 
+	          position="center" appendToBody="false" draggable="false" 
+	          resizable="false" id="validationDialog">
+		<p:messages showDetail="true" showSummary="false" autoUpdate="true" 
+		            id="validationMessages" />
+	</p:dialog>
+</ui:composition>
+</body>
+</html>

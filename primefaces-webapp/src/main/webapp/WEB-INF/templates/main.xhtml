@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title><ui:insert name="title" /></title>
+	<ui:insert name="head" />
+	<f:facet name="last">
+		<h:outputScript library="js" name="main.js" />
+		<h:outputStylesheet library="css" name="main.css" />
+	</f:facet>
+</h:head>
+<h:body>
+	<f:view contentType="text/html">
+		<div class="header">
+			<h:graphicImage library="images" name="showtime_logo.png" />
+		</div>
+		<div class="content">        	
+			<p:dialog id="modalStatus" widgetVar="modalStatusWidget" 
+			          draggable="false" closable="false" modal="true" 
+			          showHeader="false" resizable="false" maximizable="false" 
+			          width="250" height="45" header="Loading..." 
+			          style="text-align:center; padding-top:15px;">
+				<h:graphicImage library="images" name="status.gif" 
+				                style="padding-right:10px; vertical-align:middle" />
+				<p:outputLabel value="Please wait..." />
+			</p:dialog>
+			<ui:insert name="content" />
+		</div>
+		<div class="footer">
+			<h:form>
+				<h:outputLink value="/#{facesContext.externalContext.contextName}/faces/index.xhtml">
+					<h:outputText value="Home" />
+				</h:outputLink>
+				<h:outputLink value="/#{facesContext.externalContext.contextName}/faces/about.xhtml">
+					<h:outputText value="About" />
+				</h:outputLink>
+				<h:outputLink value="/#{facesContext.externalContext.contextName}/faces/showtimes.xhtml">
+					<h:outputText value="Show Times" />
+				</h:outputLink>
+				<h:outputLink value="/#{facesContext.externalContext.contextName}/faces/protected/members/index.xhtml">
+					<h:outputText value="Members" />
+				</h:outputLink>
+				<h:outputLink value="/#{facesContext.externalContext.contextName}/faces/ideas.xhtml">
+					<h:outputText value="Ideas" />
+				</h:outputLink>
+				<p:commandLink value="Logout" action="#{loginController.logout}" 
+				               rendered="#{loginController.loggedIn}" />
+			</h:form>			
+		</div>
+	</f:view>
+</h:body>
+</html>

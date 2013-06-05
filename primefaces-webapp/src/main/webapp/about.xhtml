@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"     
+      xmlns:f="http://java.sun.com/jsf/core">
+<head />
+<body>
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+	<ui:define name="title">
+		About Us
+    </ui:define>
+	<ui:define name="content">
+    	<f:metadata>
+        	<f:event type="preRenderView" listener="#{contentController.init}" />
+        </f:metadata>
+		<h:form>
+			<div class="content-box">
+                <div class="content">
+                    <h:outputText styleClass="text" value="#{contentController.content.value}" 
+                                  escape="false" 
+                                  rendered="#{not loginController.loggedIn or not contentController.editing}" />
+                    <p:editor value="#{contentController.content.value}" id="editor" width="600"
+                              rendered="#{contentController.editing and loginController.loggedIn}" />
+                </div>
+                <div class="content-controls">
+                    <p:commandLink value="Edit Content" update="@form" 
+                                   rendered="#{loginController.loggedIn and !contentController.editing}"
+                                   actionListener="#{contentController.toggleEditing}" />
+                    <p:commandLink value="Save Changes" update="@form" 
+                                   rendered="#{loginController.loggedIn and contentController.editing}"
+                                   actionListener="#{contentController.saveContent}" />
+                </div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core">
+<head />
+<body>
+<ui:composition>
+	<h:form id="reviewsForm">
+		<p:dataGrid id="reviewsGrid" var="attendance" 
+		            value="#{eventController.allEventsAttendance}" 
+		            columns="3" rows="6" paginator="true" 
+		            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		            rowsPerPageTemplate="9,12,15">
+			<f:facet name="header">
+				<p:commandLink value="Refresh" process="@this" 
+				               onclick="modalStatusWidget.show()" 
+				               oncomplete="modalStatusWidget.hide()" 
+				               actionListener="#{eventController.refreshAttendance}"
+				               update=":tabView:reviewsForm" />
+			</f:facet>
+			<p:panel id="eventPanel" header="#{attendance.event.title}" 
+			         style="text-align:center">
+				<h:panelGrid columns="1" style="width:100%">
+					<h:outputText value="#{attendance.event.title} (#{attendance.event.eventType.label})" />
+					<h:outputText value="#{attendance.event.startDate}">
+						<f:convertDateTime pattern="EEE, MMM d 'at' h:mm a" />
+					</h:outputText>
+					<h:outputText value="#{attendance.event.venue.name}" />
+					<h:outputText value="#{attendance.event.venue.phoneNumber}" />
+					<h:outputText value="#{attendance.event.venue.streetAddress}" />
+					<h:outputText value="#{attendance.event.venue.city.name}, #{attendance.event.venue.provinceState.name}" />
+					<p:outputLabel for="attended" value="Did you attend?" />
+					<p:selectOneButton id="attended" value="#{attendance.confirmed}">
+						<f:selectItem itemLabel="Yes" itemValue="true" />
+						<f:selectItem itemLabel="No" itemValue="false" />
+						<p:ajax update="@form" 
+						        listener="#{eventController.updateAttendance(attendance)}"
+						        process="@this" />
+					</p:selectOneButton>
+					<p:rating id="rating" value="#{attendance.rating}" stars="5" 
+					          disabled="#{!attendance.confirmed}">
+						<p:ajax process="@this" 
+						        listener="#{eventController.updateAttendance(attendance)}" />
+					</p:rating>
+				</h:panelGrid>
+			</p:panel>
+		</p:dataGrid>
+	</h:form>
+</ui:composition>
+</body>
+</html>

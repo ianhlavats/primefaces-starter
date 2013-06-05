@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+
+<resources>
+	
+	<!-- Embedded Derby database configuration
+	<jdbc-connection-pool name="java:app/jdbc/mycompanyPool"
+		res-type="javax.sql.DataSource" 
+		datasource-classname="org.apache.derby.jdbc.EmbeddedDataSource"
+		pool-resize-quantity="1" max-pool-size="5" steady-pool-size="0"
+		statement-timeout-in-seconds="30">
+		<property name="databaseName" value="mycompany" />
+		<property name="createDatabase" value="create" />
+	</jdbc-connection-pool>
+	<jdbc-resource pool-name="java:app/jdbc/mycompanyPool"
+		jndi-name="java:app/jdbc/mycompanyDataSource"></jdbc-resource>
+ 	-->
+ 	
+ 	<!-- MySQL database configuration --> 
+	<jdbc-connection-pool name="java:app/jdbc/mycompanyPool"
+		res-type="javax.sql.DataSource" 
+		datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource"
+		pool-resize-quantity="1" max-pool-size="5" steady-pool-size="0"
+		statement-timeout-in-seconds="30">
+		<property name="databaseName" value="mycompany" />
+		<property name="createDatabase" value="create" />
+		<property name="user" value="user" />
+		<property name="password" value="user" />				
+	</jdbc-connection-pool>
+	<jdbc-resource pool-name="java:app/jdbc/mycompanyPool"
+		jndi-name="java:app/jdbc/mycompanyDataSource"></jdbc-resource>
+			 			
+</resources>

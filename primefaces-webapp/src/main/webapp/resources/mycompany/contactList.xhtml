@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:composite="http://java.sun.com/jsf/composite" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+<body>
+<ui:composition>
+	<composite:interface>
+		<composite:attribute name="value" required="true" />
+		<composite:attribute name="header" required="false" default="People" />
+		<composite:attribute name="mobile" required="false" default="false" />
+	</composite:interface>
+	<composite:implementation>
+		<p:carousel style="width:100%" value="#{cc.attrs.value}" 
+		            var="person" numVisible="4" 
+		            rendered="#{not empty cc.attrs.value and not cc.attrs.mobile}"
+		            itemStyleClass="person-item">
+			<f:facet name="header">
+				<h:outputText value="#{cc.attrs.header}" />
+			</f:facet>
+			<h:panelGrid columns="1" style="width:100%">
+				<p:commandLink value="Chat" onclick="chatDialogWidget.show()" 
+				               update=":chatForm:chatPanel" 
+				               actionListener="#{chatController.beginChat}" 
+				               disabled="#{!userController.isUserPresent(person)}" />
+				<h:outputText value="#{person.firstName}" />
+				<p:graphicImage value="#{resource['images:user-icon.png']}" 
+				                width="75" 
+				                rendered="#{userController.isUserPresent(person)}" />
+				<p:graphicImage value="#{resource['images:offline-user-icon.png']}" width="75" 
+				                rendered="#{!userController.isUserPresent(person)}" />
+			</h:panelGrid>
+			<f:facet name="footer">
+				<h:outputText value="Total: #{cc.attrs.value.size()}" />
+			</f:facet>
+		</p:carousel>
+		<!-- Mobile UI -->
+		<p:dataList style="width:110%" value="#{cc.attrs.value}" 
+		            var="person" id="mobileContactList" 
+		            rendered="#{not empty cc.attrs.value and cc.attrs.mobile}"
+		            itemStyleClass="mobile-person-item">
+			<f:attribute name="filter" value="true" />
+			<h:panelGroup rendered="#{userController.isUserPresent(person)}">
+				<h:outputLink value="#chat" onclick="beginMobileChat()">
+					<p:graphicImage value="#{resource['images:user-icon.png']}" 
+					                width="50" 
+					                style="text-align:left; vertical-align:middle; margin-top:15px" />
+					<h:outputText value="#{person.firstName}" 
+					              style="display:block; margin-top:18px; font-size:0.9em" />
+				</h:outputLink>
+			</h:panelGroup>
+			<h:panelGroup rendered="#{!userController.isUserPresent(person)}">
+				<p:graphicImage value="#{resource['images:offline-user-icon.png']}" width="50" 
+				                style="text-align:left; vertical-align:middle; margin-top:15px" />
+				<h:outputText value="#{person.firstName}" 
+				              style="display:block; margin-top:18px; font-size:0.9em" />
+			</h:panelGroup>
+		</p:dataList>
+	</composite:implementation>
+</ui:composition>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head />
+<body>
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+	<ui:define name="title">
+		Show Times
+	</ui:define>
+	<ui:define name="head">
+		<script type="text/javascript" 
+		        src="http://maps.google.com/maps/api/js?sensor=true" />
+	</ui:define>
+	<ui:define name="content">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{searchController.init}" />
+		</f:metadata>
+		<p:panel header="Find Shows" style="margin:0 auto; width:70%" 
+		         styleClass="shows-panel">
+			<h:panelGrid columns="2" cellspacing="10">
+				<h:form>
+					<h:panelGrid columns="1">
+						<p:selectOneMenu value="#{searchController.city}" 
+						                 styleClass="search-input" 
+						                 disabled="#{searchController.provinceState eq null}"
+						                 onchange="PrimeFaces.cleanWatermarks()" 
+						                 oncomplete="PrimeFaces.showWatermarks()" 
+						                 id="city" style="width:200px">
+							<f:selectItem itemLabel="Select City" itemValue="#{null}" />
+							<f:selectItems value="#{searchController.citiesForState}" 
+							               var="city" itemLabel="#{city.name}" 
+							               itemValue="#{city}" />
+						</p:selectOneMenu>
+						<p:selectOneMenu value="#{searchController.provinceState}" 
+						                 onclick="PrimeFaces.cleanWatermarks()" 
+						                 oncomplete="PrimeFaces.showWatermarks()" 
+						                 id="state" style="width:200px">
+							<f:selectItem itemLabel="Select State" itemValue="#{null}" />
+							<f:selectItems value="#{searchController.provinceStates}" 
+							               var="state" itemLabel="#{state.name}" 
+							               itemValue="#{state}" />
+							<p:ajax update="city" process="@this" />
+						</p:selectOneMenu>
+						<p:selectOneMenu value="#{searchController.eventType}" 
+						                 onchange="PrimeFaces.cleanWatermarks()" 
+						                 oncomplete="PrimeFaces.showWatermarks()" 
+						                 style="width:200px">
+							<f:selectItem itemLabel="Select Event Type" itemValue="#{null}" />
+							<f:selectItems value="#{eventController.eventTypes}" var="type"
+							               itemLabel="#{type.label}" itemValue="#{type}" />
+						</p:selectOneMenu>
+						<p:inputText id="keyword" style="width:192px;" 
+						             value="#{searchController.keyword}" />
+						<p:watermark for="keyword" value="Enter Keyword" />
+						<h:panelGroup>
+							<p:outputLabel value="Max Results" for="maxResults" />
+							<p:spinner min="0" max="50" size="1" style="padding-left:5px" 
+							           id="maxResults" 
+							           value="#{searchController.maxResults}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<p:selectBooleanCheckbox id="outdoor" 
+							                         widgetVar="outdoorCheckboxWidget" 
+							                         value="#{searchController.outdoorVenue}" />
+							<p:outputLabel style="padding-left:5px" value="outdoor venue" 
+							               onclick="outdoorCheckboxWidget.toggle()" 
+							               for="outdoor" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<p:selectBooleanCheckbox id="noCoverCharge" 
+							                         widgetVar="noChargeCheckboxWidget" 
+							                         value="#{searchController.noCoverCharge}" />
+							<p:outputLabel style="padding-left:5px" value="no cover charge"
+							               onclick="noChargeCheckboxWidget.toggle()" 
+							               for="noCoverCharge" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<p:selectBooleanCheckbox id="alcoholPermitted" 
+							                         widgetVar="alcoholCheckboxWidget" 
+							                         value="#{searchController.alcoholPermitted}" />
+							<p:outputLabel style="padding-left:5px" 
+							               onclick="alcoholCheckboxWidget.toggle()" 
+							               value="alcohol permitted" for="alcoholPermitted" />
+						</h:panelGroup>
+						<p:commandButton value="Search" update=":showTimeMap" 
+						                 actionListener="#{searchController.search}" />
+					</h:panelGrid>
+				</h:form>
+				<h:panelGroup>
+					<p:gmap center="#{searchController.mapCenter}" 
+					        zoom="#{searchController.mapZoom}" type="ROADMAP" 
+					        id="showTimeMap" style="width:600px;height:300px" 
+					        model="#{searchController.searchResultsModel}">
+						<p:ajax event="overlaySelect" 
+						        listener="#{searchController.eventSelected}" />
+						<p:gmapInfoWindow id="infoWindow">
+							<p:outputPanel style="text-align:center;display:block;margin:auto;font-size:12px">
+								<h:panelGrid>
+									<h:outputText value="#{searchController.selectedEvent.title} (#{searchController.selectedEvent.eventType.label})" />
+									<h:outputText value="#{searchController.selectedEvent.startDate}">
+										<f:convertDateTime pattern="EEEE, MMMM d 'at' hh:mm a" />
+									</h:outputText>
+									<h:outputText value="#{searchController.selectedEvent.venue.name}" />
+									<h:outputText value="#{searchController.selectedEvent.venue.phoneNumber}" />
+									<h:outputText value="#{searchController.selectedEvent.venue.streetAddress}" />
+									<h:outputText value="#{searchController.selectedEvent.venue.city.name}, #{searchController.selectedEvent.venue.provinceState.name}" />
+								</h:panelGrid>
+							</p:outputPanel>
+						</p:gmapInfoWindow>
+					</p:gmap>
+				</h:panelGroup>
+			</h:panelGrid>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

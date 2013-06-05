@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html">
+<head />
+<body>
+<ui:composition>
+	<h:form id="newContactDialogForm">
+		<p:dialog header="Add Contact" modal="true" showEffect="fade" 
+		          hideEffect="fade" widgetVar="newContactDialogWidget" width="650"
+		          position="center" appendToBody="false" height="75" 
+		          draggable="false" resizable="false" id="newContactDialog">
+			<h:panelGrid columns="3" cellpadding="5" id="contactsPanel">
+				<p:autoComplete id="contactName" label="Contact Name" 
+				                completeMethod="#{contactsController.findUsersByName}"
+				                itemLabel="#{user.firstName} #{user.lastName}" 
+				                itemValue="#{user}" var="user" required="true" 
+				                value="#{contactsController.relationship.toUser}">
+					<p:ajax event="itemSelect" update="contactType,saveContactButton"
+					        listener="#{contactsController.userSelected}" />
+				</p:autoComplete>
+				<p:selectOneMenu label="Contact Type" 
+				                 value="#{contactsController.relationship.relationshipType}"
+				                 id="contactType" required="true">
+					<f:selectItem itemLabel="Select Relationship" itemValue="#{null}" />
+					<f:selectItems value="#{contactsController.relationshipTypes}" 
+					               var="relationshipType" 
+					               itemValue="#{relationshipType}" 
+					               itemLabel="#{relationshipType.label}" />
+				</p:selectOneMenu>
+				<p:commandButton id="saveContactButton" value="Save" 
+				                 oncomplete="if (args.validationFailed) { validationDialogWidget.show() } else { newContactDialogWidget.hide() }"
+				                 update=":tabView:contactsForm,contactName,contactType"
+				                 action="#{contactsController.saveRelationship}" />
+			</h:panelGrid>
+			<p:defaultCommand target="saveContactButton" />
+		</p:dialog>
+	</h:form>
+</ui:composition>
+</body>
+</html>

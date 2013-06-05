@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:mycompany="http://www.showtimeguru.com/taglib"       
+      xmlns:f="http://java.sun.com/jsf/core">
+<head />
+<body>
+<ui:composition>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{venueController.init}" />
+	</f:metadata>
+	<h:form id="venueForm" styleClass="input-form">
+		<p:messages showDetail="true" autoUpdate="false" id="venueMessages">
+			<p:effect type="fade" event="load" delay="2000" />
+		</p:messages>
+		<h:panelGrid columns="2" columnClasses="top,top left" width="100%">
+			<h:panelGrid columns="2" id="venuePanel">
+				<p:outputLabel value="Venue Name" for="name" />
+				<p:inputText value="#{venueController.venue.name}" id="name" 
+				             required="true" />
+				<p:outputLabel value="Venue Address" for="address" />
+				<p:inputText value="#{venueController.venue.streetAddress}" 
+				             required="true" id="address" />
+				<p:outputLabel value="Venue City" for="city" />
+				<p:inputText value="#{venueController.venue.city.name}" id="city" 
+				             required="true" />
+				<p:outputLabel value="Phone Number" for="venuePhoneNumber" />
+				<p:inputMask id="venuePhoneNumber" label="Phone Number" 
+				             value="#{venueController.venue.phoneNumber}" 
+				             mask="(999) 999-9999" />
+				<p:outputLabel value="State" for="venueState" />
+				<p:selectOneMenu value="#{venueController.venue.provinceState}" 
+				                 id="venueState" style="width:453px" 
+				                 required="true" editable="true" 
+				                 disabled="#{venueController.venue.country eq null}">
+					<f:param id="countryParam" 
+					         value="#{venueController.venue.country}" />
+					<f:selectItem itemLabel="Select" itemValue="#{null}" />
+					<f:selectItems value="#{venueController.findProvinceStatesByCountry(venueController.venue.country)}"
+					               var="state" itemLabel="#{state.name}" 
+					               itemValue="#{state}" />
+                    <mycompany:editableStateConverter />					                                   
+				</p:selectOneMenu>
+				<p:outputLabel value="Country" for="venueCountry" />
+				<p:selectOneMenu value="#{venueController.venue.country}" 
+				                 id="venueCountry" required="true">
+					<f:selectItem itemLabel="Select" itemValue="#{null}" />
+					<f:selectItems value="#{venueController.countries}" 
+					               var="country" itemValue="#{country}" 
+					               itemLabel="#{country.name}" />
+					<p:ajax update="venueState" process="@this" immediate="true" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGroup>
+				<p:selectOneListbox id="selectedVenue" 
+				                    value="#{venueController.venue}" 
+				                    style="width:275px; height:220px;" 
+				                    valueChangeListener="#{venueController.venueSelected}">
+					<f:selectItems value="#{venueController.venues}" var="venue" 
+					               itemLabel="#{venue.name}" itemValue="#{venue}" />
+					<p:ajax process="@this" 
+					        update="venuePanel deleteButton confirmDialog" />
+				</p:selectOneListbox>
+			</h:panelGroup>
+		</h:panelGrid>
+		<div style="text-align:center">
+			<p:commandButton id="newVenueButton" value="New" process="@this" 
+			                 update="venueForm" immediate="true" 
+			                 actionListener="#{venueController.newVenue}" />
+			<p:commandButton id="saveVenueButton" value="Save" 
+			                 process="@this,name,address,city,venuePhoneNumber,venueState,venueCountry"
+			                 update="venueForm" 
+			                 actionListener="#{venueController.saveVenue}" />
+			<p:commandButton value="Delete" id="deleteButton" 
+			                 disabled="#{venueController.venue.version eq null}"
+			                 type="button" onclick="confirmationWidget.show()" />
+		</div>
+		<p:confirmDialog id="confirmDialog" 
+		                 message="Are you sure you want to delete '#{venueController.venue.name}'?&lt;br&gt;All related events will also be deleted."
+		                 header="Delete Venue" severity="alert" 
+		                 widgetVar="confirmationWidget">
+			<div style="text-align:center">
+				<p:commandButton id="confirm" value="OK" update="venueForm" 
+				                 oncomplete="confirmationWidget.hide()" 
+				                 actionListener="#{venueController.deleteVenue}" />
+				<p:commandButton id="decline" value="Cancel" 
+				                 onclick="confirmationWidget.hide()" type="button" />
+			</div>
+		</p:confirmDialog>
+		<p:defaultCommand target="saveVenueButton" />
+		<p:focus for="name" />
+	</h:form>
+</ui:composition>
+</body>
+</html>

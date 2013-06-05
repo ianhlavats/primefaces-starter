@@ -1,0 +1,129 @@
+body, ul {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:1.1em;
+	color:#4F4F4F;
+}
+div.header {
+	text-align:center;
+	margin-bottom:25px;
+}
+div.content table {
+	margin:0 auto;
+	text-align:center;
+}
+div.content table td {
+	text-align:left;
+}
+div.footer {
+	text-align:center;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+div.footer a {
+	margin-right:15px;
+}
+ul li {
+	margin-bottom:15px;
+}
+.input-form input.ui-inputfield {
+	width:445px;
+}
+.input-form input.ui-inputfield.hasDatepicker {
+	width:394px;
+}
+button.ui-datepicker-trigger {
+	vertical-align:middle;
+	height:35px;
+	margin-left:5px;
+}
+.centered {
+	text-align:center;
+}
+.ui-tabs-hide {
+	position:absolute;
+	left:-10000px;
+}
+.ui-overlay-hidden {
+	position:absolute;
+	left:-10000px;
+}
+.ui-datepicker .ui-datepicker-title select {
+	font-size:0.7em;
+}
+.top {
+	vertical-align:top;
+}
+.left {
+	text-align:left;
+}
+.content-box {
+	width:50%;
+	margin:0 auto;
+}
+.person-item {
+	height:140px;
+	text-align:center;
+	width:200px;
+}
+.mobile-person-item {
+	height:130px;
+	text-align:center;
+	vertical-align:middle;
+	width:100%;
+	font-size:0.9em;
+}
+div.content .person-item table td {
+	text-align:center;
+}
+.chatlogs {
+	height:235px;
+	width:450px;
+	overflow:auto;
+	padding:0.5em 1em 0.5em 0.5em;
+}
+.ui-dashboard .ui-panel {
+	margin:10px;
+	width:265px;
+	font-size:0.9em;
+}
+.ui-dashboard .ui-panel .ui-widget-content {
+	height:200px;
+	overflow-y:auto;
+	font-size:0.8em;
+}
+.ui-dashboard .ui-panel .ui-widget-content img {
+	padding-right:10px;
+	padding-bottom:5px;
+}
+.align-left {
+	text-align:left;
+}
+.align-right {
+	text-align:right;
+}
+.content-controls {
+	text-align:center;
+}
+.content-box div.ui-editor {
+	text-align:center;
+	margin:0 auto;
+}
+.chat-users-column {
+	width:25%;
+}
+.chat-text-column {
+	width:75%;	
+}
+.centervh {
+	text-align:center;
+	vertical-align:middle;
+}
+.no-border {
+	border:none;	
+}
+.ui-panelgrid td.no-border {
+	border:none;		
+}
+table.no-border .ui-widget-content {
+	border:none;	
+}

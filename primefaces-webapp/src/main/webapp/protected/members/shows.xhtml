@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core">
+<head />
+<body>
+<ui:composition>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{eventController.init}" />
+	</f:metadata>
+	<h:form id="showsForm">
+		<p:messages showDetail="true" autoUpdate="true" 
+		            id="scheduleMessages" />
+		<p:schedule value="#{eventController.userScheduleModel}" 
+		            id="schedule" >
+			<p:ajax event="dateSelect" 
+			        listener="#{eventController.dateSelected}" 
+			        update=":addShowDialogForm" 
+			        oncomplete="addShowDialogWidget.show()" />
+			<p:ajax event="eventSelect" 
+			        listener="#{eventController.eventSelected}" 
+                    update=":addShowDialogForm" 
+			        oncomplete="addShowDialogWidget.show()" />
+			<p:ajax event="eventMove" listener="#{eventController.eventMoved}" 
+			        update="scheduleMessages" />
+			<p:ajax event="eventResize" 
+			        listener="#{eventController.eventResized}" 
+			        update="scheduleMessages" />
+		</p:schedule>
+	</h:form>	
+</ui:composition>
+</body>
+</html>

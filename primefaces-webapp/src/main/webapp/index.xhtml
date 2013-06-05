@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+<h:head />
+<body>
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+	<ui:define name="title">
+		Welcome to our site
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="loginForm">
+			<h:panelGrid columns="2" border="0">
+				<p:panel header="Please Sign In" id="loginPanel">
+					<p:messages id="messages" showDetail="true" autoUpdate="true" />
+					<p:panelGrid columns="2" styleClass="no-border" 
+					             columnClasses="no-border,no-border">
+						<p:outputLabel value="Username" for="username" />
+						<p:inputText id="username" label="Username" 
+						             value="#{credentials.username}" />
+						<p:outputLabel value="Password" for="password" />
+						<p:password id="password" label="Password" value="#{credentials.password}" />
+						<h:outputText value="" />
+						<p:commandLink value="Forgot your password?" />
+						<h:outputText value="" />
+						<p:commandButton id="loginButton" value="Login" 
+						                 action="#{loginController.login}" update="loginPanel" />
+						<h:outputText value="" />
+					</p:panelGrid>
+					<p:focus for="username" />
+					<p:defaultCommand target="loginButton" />
+				</p:panel>
+				<ul>
+					<li>
+						Find out what's happening
+					</li>
+					<li>
+						Rate and review shows
+					</li>
+					<li>
+						Invite your friends
+					</li>
+					<li>
+						<a href="./signup.xhtml">Join today!</a>
+					</li>
+				</ul>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

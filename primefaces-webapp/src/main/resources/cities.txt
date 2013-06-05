@@ -1,0 +1,14 @@
+US:California:San Francisco:37.7810,-122.418
+US:California:Los Angeles:34.112,-118.246
+US:California:San Diego:32.776,-117.158
+US:New York:New York:40.739,-74.009
+US:New York:Buffalo:42.898,-78.878
+US:New York:Rochester:43.173,-77.609
+US:Illinois:Chicago:41.900,-87.627
+US:Texas:Dallas:32.843,-96.770
+CA:Ontario:Toronto:43.677,-79.386
+CA:Quebec:Montreal:45.527,-73.559
+CA:British Columbia:Vancouver:49.2660,-123.115
+CA:Nova Scotia:Halifax:44.6533,-63.577
+
+

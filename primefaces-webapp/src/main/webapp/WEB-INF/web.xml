@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name>primefaces-webapp</display-name>
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+		<param-value>/WEB-INF/mycompany.taglib.xml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>server</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Production</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+		<param-value>1</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.validator.DISABLE_DEFAULT_BEAN_VALIDATOR</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
+		<param-value>*.jsf;*.xhtml;/faces/*</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.enableMissingResourceLibraryDetection</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.clientStateTimeout</param-name>
+		<param-value>1200000</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.responseBufferSize</param-name>
+		<param-value>500000</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.numberOfViewsInSession</param-name>
+		<param-value>5</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.numberOfLogicalViews</param-name>
+		<param-value>5</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.validateXml</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.verifyObjects</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>facelets.DEVELOPMENT</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+		<param-value>[YOUR RECAPTCHA PUBLIC KEY HERE]</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+		<param-value>[YOUR RECAPTCHA PRIVATE KEY HERE]</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>#{userController.userTheme}</param-value>
+	</context-param>
+	<!-- Not working <context-param> <param-name>primefaces.PUSH_SERVER_URL</param-name> 
+		<param-value>http://localhost:9090</param-value> </context-param> -->
+		<!-- 
+	<context-param>
+		<param-name>primefaces.PUSH_SERVER_URL</param-name>
+		<param-value>ws://localhost:8080</param-value>
+	</context-param>
+	-->
+	    
+    <context-param>
+        <param-name>primefaces.PUSH_SERVER_URL</param-name>
+        <param-value>http://localhost:8080</param-value>
+    </context-param>
+   
+	<listener>
+		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>com.mycompany.lifecycle.ServletContextLifecycleNotifier</listener-class>
+	</listener>	
+
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>/faces/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>PushServlet</servlet-name>
+		<servlet-class>org.primefaces.push.PushServlet</servlet-class>
+		<!-- Tell Atmosphere to use TrackMessageSizeInterceptor - in order to avoid 
+			glued messages -->
+		<init-param>
+			<param-name>org.atmosphere.cpr.AtmosphereInterceptor</param-name>
+			<param-value>org.atmosphere.client.TrackMessageSizeInterceptor</param-value>
+		</init-param>
+		<!-- that is for long-pollin in order to cache messsages in the session -->
+		<init-param>
+			<param-name>org.atmosphere.cpr.sessionSupport</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
+			<param-value>org.atmosphere.cache.SessionBroadcasterCache</param-value>
+		</init-param>
+		<!-- This one I have no idea what it does. Someone in the forums suggested 
+			it -->
+		<init-param>
+			<param-name>org.atmosphere.disableOnStateEvent</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<!-- hera I tell PrimeFaces to use my PushRule -->
+		<init-param>
+			<param-name>org.primefaces.push.rules</param-name>
+			<param-value>com.mycompany.websocket.DefaultPushRule</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PushServlet</servlet-name>
+		<url-pattern>/primepush/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- <servlet> <servlet-name>Push Servlet</servlet-name> <servlet-class>org.primefaces.push.PushServlet</servlet-class> 
+		<init-param> <param-name>org.atmosphere.websocket.maxTextMessageSize</param-name> 
+		<param-value>0</param-value> </init-param> <init-param> <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name> 
+		<param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value> </init-param> 
+		<init-param> <param-name>channels</param-name> <param-value>chat,counter</param-value> 
+		</init-param> <async-supported>true</async-supported> </servlet> <servlet-mapping> 
+		<servlet-name>Push Servlet</servlet-name> <url-pattern>/primepush/*</url-pattern> 
+		</servlet-mapping> -->
+
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+	</filter-mapping>
+
+	<mime-mapping>
+		<extension>txt</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>html</extension>
+		<mime-type>text/html</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>css</extension>
+		<mime-type>text/css</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xhtml</extension>
+		<mime-type>text/html</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>gif</extension>
+		<mime-type>image/gif</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jpeg</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jpg</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>png</extension>
+		<mime-type>image/png</mime-type>
+	</mime-mapping>
+</web-app>
+
