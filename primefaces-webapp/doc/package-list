@@ -1,0 +1,8 @@
+com.mycompany.controller
+com.mycompany.convert
+com.mycompany.lifecycle
+com.mycompany.model
+com.mycompany.service
+com.mycompany.service.impl
+com.mycompany.util
+com.mycompany.websocket
