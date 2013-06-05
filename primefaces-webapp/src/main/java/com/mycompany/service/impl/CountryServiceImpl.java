@@ -203,9 +203,7 @@ public class CountryServiceImpl extends AbstractService implements CountryServic
 	 * This method is responsible for initializing a List of Country objects
 	 * when the web application is started. We use the CDI event handling system
 	 * combined with the custom {@link Initialized} event to ensure this method
-	 * is called at startup time. Note: since this class is not an EJB, to
-	 * insert data we have to use bean-managed transactions with the
-	 * {@link UserTransaction}.
+	 * is called at startup time.
 	 * 
 	 * @param context
 	 * @throws Exception
