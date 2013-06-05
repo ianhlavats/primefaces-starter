@@ -61,7 +61,7 @@ public interface IdeaService {
 	/**
 	 * Finds a list of {@link Idea} objects.
 	 * 
-	 * @return
+	 * @return A List of Idea objects.
 	 */
 	List<Idea> findIdeas();
 

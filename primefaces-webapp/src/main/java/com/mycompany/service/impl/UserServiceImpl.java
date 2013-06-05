@@ -38,6 +38,8 @@ import com.mycompany.service.UserService;
 import com.mycompany.util.Queries;
 
 /**
+ * User service implementation class.
+ * 
  * @uml.dependency supplier="javax.persistence.EntityManager"
  */
 @Named("userService")
@@ -59,7 +61,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
 	@Override
 	public User findUser(String username, String password) {
-		TypedQuery<User> query = em.createNamedQuery(Queries.USER_FIND_BY_USERNAME_PASSWORD, User.class);
+		TypedQuery<User> query = em.createNamedQuery(Queries.USER_FIND_BY_USERNAME_PASSWORD,
+				User.class);
 		query.setParameter(1, username);
 		query.setParameter(2, password);
 		List<User> users = query.getResultList();
@@ -103,7 +106,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
 	@Override
 	public List<User> findUsersByType(RelationshipType type, User user) {
-		TypedQuery<User> query = em.createNamedQuery(Queries.USER_FIND_BY_RELATIONSHIP_TYPE, User.class);
+		TypedQuery<User> query = em.createNamedQuery(Queries.USER_FIND_BY_RELATIONSHIP_TYPE,
+				User.class);
 		query.setParameter(1, type);
 		query.setParameter(2, user);
 		return query.getResultList();

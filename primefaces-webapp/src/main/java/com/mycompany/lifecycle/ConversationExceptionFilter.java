@@ -43,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
- * This filter handles the {@link NonexistentConversationException) propagating 
+ * This filter handles the {@link NonexistentConversationException} propagating
  * from CDI for requests containing an invalid conversation ID (cid parameter).
  * 
  * @author Ian Hlavats (ian@tarantulaconsulting.com)

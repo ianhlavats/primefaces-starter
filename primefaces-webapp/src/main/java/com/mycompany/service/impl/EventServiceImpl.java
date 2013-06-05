@@ -49,6 +49,12 @@ import com.mycompany.model.Venue_;
 import com.mycompany.service.EventService;
 import com.mycompany.util.Queries;
 
+/**
+ * Event service implementation class.
+ * 
+ * @author Ian Hlavats (ian@tarantulaconsulting.com)
+ * 
+ */
 @Named("eventService")
 @Stateless
 public class EventServiceImpl extends AbstractService implements EventService {

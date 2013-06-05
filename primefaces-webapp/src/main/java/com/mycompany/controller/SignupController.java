@@ -83,7 +83,7 @@ public class SignupController extends AbstractController {
 	/**
 	 * Return a date 100 years ago.
 	 * 
-	 * @return
+	 * @return A Date object.
 	 */
 	public Date getMinDate() {
 		Calendar cal = Calendar.getInstance();

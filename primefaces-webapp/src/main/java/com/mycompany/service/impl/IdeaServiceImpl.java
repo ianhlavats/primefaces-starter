@@ -36,6 +36,12 @@ import org.primefaces.model.mindmap.MindmapNode;
 import com.mycompany.model.Idea;
 import com.mycompany.service.IdeaService;
 
+/**
+ * Idea service implementation class.
+ * 
+ * @author Ian Hlavats (ian@tarantulaconsulting.com)
+ * 
+ */
 @Named("ideaService")
 @Stateless
 public class IdeaServiceImpl extends AbstractService implements IdeaService {

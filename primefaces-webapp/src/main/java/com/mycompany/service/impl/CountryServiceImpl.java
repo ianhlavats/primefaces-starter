@@ -47,10 +47,8 @@ import com.mycompany.service.CountryService;
 import com.mycompany.util.Queries;
 
 /**
- * <p>
- * Controller class for countries. Since this class holds application-wide
- * state, namely a list of {@link Country} objects, we annotate it as an
- * application-scoped CDI bean.
+ * 
+ * Country service implementation class.
  * 
  * @author Ian Hlavats (ian@tarantulaconsulting.com)
  * 

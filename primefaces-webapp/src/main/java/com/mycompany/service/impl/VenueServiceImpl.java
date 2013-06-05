@@ -33,6 +33,12 @@ import javax.persistence.TypedQuery;
 import com.mycompany.model.Venue;
 import com.mycompany.service.VenueService;
 
+/**
+ * Venue service implementation class.
+ * 
+ * @author Ian Hlavats (ian@tarantulaconsulting.com)
+ * 
+ */
 @Named("venueService")
 @Stateless
 public class VenueServiceImpl extends AbstractService implements VenueService {

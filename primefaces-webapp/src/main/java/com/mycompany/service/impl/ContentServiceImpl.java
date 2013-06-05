@@ -33,6 +33,12 @@ import com.mycompany.model.Content;
 import com.mycompany.service.ContentService;
 import com.mycompany.util.Queries;
 
+/**
+ * Content service implementation class.
+ * 
+ * @author Ian Hlavats (ian@tarantulaconsulting.com)
+ * 
+ */
 @Named("contentService")
 @Stateless
 public class ContentServiceImpl extends AbstractService implements ContentService {

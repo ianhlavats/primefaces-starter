@@ -24,6 +24,7 @@
  */
 package com.mycompany.util;
 
+import com.mycompany.model.City;
 import com.mycompany.model.Content;
 import com.mycompany.model.Country;
 import com.mycompany.model.Event;

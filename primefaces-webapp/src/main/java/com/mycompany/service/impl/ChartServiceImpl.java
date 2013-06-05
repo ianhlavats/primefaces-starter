@@ -34,6 +34,12 @@ import com.mycompany.model.Gender;
 import com.mycompany.service.ChartService;
 import com.mycompany.util.Queries;
 
+/**
+ * Chart service implementation class.
+ * 
+ * @author Ian Hlavats (ian@tarantulaconsulting.com)
+ * 
+ */
 @Named("chartService")
 @Stateless
 public class ChartServiceImpl extends AbstractService implements ChartService {
