@@ -47,12 +47,7 @@ import com.mycompany.service.IdeaService;
 public class IdeaServiceImpl extends AbstractService implements IdeaService {
 
 	/**
-	 * This method uses recursion to build the mind map data structure.
-	 * 
-	 * @param parentIdea
-	 *            The parent {@link Idea}.
-	 * @param parentNode
-	 *            The parent {@link MindmapNode}.
+	 * {@inheritDoc}
 	 */
 	public void buildMindMap(Idea parentIdea, MindmapNode parentNode) {
 		Idea idea = parentIdea;
@@ -70,11 +65,17 @@ public class IdeaServiceImpl extends AbstractService implements IdeaService {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Idea findIdea(Integer id) {
 		return em.find(Idea.class, id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Idea> findIdeas() {
 		String jql = "select idea from Idea idea where idea.parent is null";
@@ -83,6 +84,9 @@ public class IdeaServiceImpl extends AbstractService implements IdeaService {
 		return ideas;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Idea saveIdea(Idea idea) {
 		Idea saved = idea;

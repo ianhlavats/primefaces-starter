@@ -36,10 +36,8 @@ import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.servlet.ServletContext;
-import javax.transaction.UserTransaction;
 
 import com.mycompany.lifecycle.Initialized;
-import com.mycompany.lifecycle.ServletContextLifecycleNotifier;
 import com.mycompany.model.City;
 import com.mycompany.model.Country;
 import com.mycompany.model.ProvinceState;
@@ -57,22 +55,26 @@ import com.mycompany.util.Queries;
 @Stateless
 public class CountryServiceImpl extends AbstractService implements CountryService {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public ProvinceState createProvinceState(Country country, String name) {
 		ProvinceState state = null;
 		try {
-			// tx.begin();
 			state = new ProvinceState();
 			state.setName(name);
 			state.setCountry(country);
 			country.getProvinceStates().add(state);
 			em.persist(state);
-			// tx.commit();
 		} catch (Exception e) {
 			logger.error("Unable to create province/state object:", e);
 		}
 		return state;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public List<City> findCitiesByState(ProvinceState state) {
 		String jql = "select c from City c where c.provinceState = ?1 order by c.name";
 		TypedQuery<City> query = em.createQuery(jql, City.class);
@@ -80,6 +82,9 @@ public class CountryServiceImpl extends AbstractService implements CountryServic
 		return query.getResultList();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public City findCity(String name, ProvinceState provinceState) {
 		City city = null;
 		try {
@@ -93,6 +98,9 @@ public class CountryServiceImpl extends AbstractService implements CountryServic
 		return city;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public City findCityById(Integer id) {
 		return em.find(City.class, id);
 	}
@@ -103,10 +111,16 @@ public class CountryServiceImpl extends AbstractService implements CountryServic
 							.getSingleResult();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Country findCountryById(Integer id) {
 		return em.find(Country.class, id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<ProvinceState> findProvinceStatesByCountry(Country country) {
 		String jql = "select p from ProvinceState p where p.country = ?1 order by p.name";
@@ -115,10 +129,16 @@ public class CountryServiceImpl extends AbstractService implements CountryServic
 		return query.getResultList();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public ProvinceState findStateById(Integer id) {
 		return em.find(ProvinceState.class, id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public ProvinceState findStateByName(Country country, String stateName) {
 		if (country == null) {
 			return null;
@@ -131,12 +151,18 @@ public class CountryServiceImpl extends AbstractService implements CountryServic
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Country> getCountries() {
 		return em.createNamedQuery(Queries.COUNTRY_FIND_ALL).getResultList();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<ProvinceState> getProvinceStates() {
 		String jql = "select p from ProvinceState p where p.country.code = 'US' order by p.name";
@@ -200,14 +226,7 @@ public class CountryServiceImpl extends AbstractService implements CountryServic
 	}
 
 	/**
-	 * This method is responsible for initializing a List of Country objects
-	 * when the web application is started. We use the CDI event handling system
-	 * combined with the custom {@link Initialized} event to ensure this method
-	 * is called at startup time.
-	 * 
-	 * @param context
-	 * @throws Exception
-	 * @see ServletContextLifecycleNotifier
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void init(@Observes @Initialized ServletContext context) throws Exception {

@@ -43,6 +43,9 @@ import com.mycompany.service.VenueService;
 @Stateless
 public class VenueServiceImpl extends AbstractService implements VenueService {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void deleteVenue(Venue venue) {
 		Venue found = em.find(Venue.class, venue.getId());
@@ -51,11 +54,17 @@ public class VenueServiceImpl extends AbstractService implements VenueService {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Venue findVenueById(Integer id) {
 		return em.find(Venue.class, id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Venue> findVenues() {
 		String jql = "select v from Venue v order by v.name";
@@ -64,6 +73,9 @@ public class VenueServiceImpl extends AbstractService implements VenueService {
 		return venues;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Venue saveVenue(Venue venue) {
 		Venue saved = venue;

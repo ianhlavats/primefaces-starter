@@ -59,11 +59,17 @@ import com.mycompany.util.Queries;
 @Stateless
 public class EventServiceImpl extends AbstractService implements EventService {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Event> findAllEvents() {
 		return em.createNamedQuery(Queries.EVENT_FIND_ALL, Event.class).getResultList();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<EventAttendance> findAllEventsAttendanceByUser(User user) {
 		TypedQuery<EventAttendance> query = em.createNamedQuery(
@@ -72,6 +78,9 @@ public class EventServiceImpl extends AbstractService implements EventService {
 		return query.getResultList();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public EventAttendance findEventAttendance(Event event, User user) {
 		TypedQuery<EventAttendance> query = em.createNamedQuery(
@@ -85,11 +94,17 @@ public class EventServiceImpl extends AbstractService implements EventService {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Event findEventById(Integer id) {
 		return em.find(Event.class, id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Event> findUserEvents(Date start, Date end, User user) {
 		String jql = "select evt from Event evt where evt.createdBy = ?1 and evt.startDate between ?2 and ?3";
@@ -101,6 +116,9 @@ public class EventServiceImpl extends AbstractService implements EventService {
 		return events;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public EventAttendance saveAttendance(EventAttendance attendance) {
 		EventAttendance saved = attendance;
@@ -112,6 +130,9 @@ public class EventServiceImpl extends AbstractService implements EventService {
 		return saved;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Event saveEvent(Event event) {
 		Event saved = event;
@@ -123,6 +144,9 @@ public class EventServiceImpl extends AbstractService implements EventService {
 		return saved;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Event> findEvents(City city, ProvinceState provinceState, EventType eventType,
 			String keyword) {

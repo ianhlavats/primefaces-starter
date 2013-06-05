@@ -46,6 +46,9 @@ import com.mycompany.util.Queries;
 @Stateless
 public class UserServiceImpl extends AbstractService implements UserService {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public UserRelationship findRelationshipToUser(User user1, User user2) {
 		UserRelationship found = null;
 		try {
@@ -59,6 +62,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
 		return found;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public User findUser(String username, String password) {
 		TypedQuery<User> query = em.createNamedQuery(Queries.USER_FIND_BY_USERNAME_PASSWORD,
@@ -72,11 +78,17 @@ public class UserServiceImpl extends AbstractService implements UserService {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public User findUserById(Integer id) {
 		return em.find(User.class, id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public User findUserByUsername(String username) {
 		String jql = "select u from User u where u.username = ?1";
@@ -89,6 +101,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<User> findUsers() {
 		String jql = "select u from User u order by u.username";
@@ -96,6 +111,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
 		return users;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<User> findUsersByName(String suggest) {
 		TypedQuery<User> query = em.createNamedQuery(Queries.USER_FIND_BY_PARTIAL_NAME, User.class);
@@ -104,6 +122,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
 		return users;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<User> findUsersByType(RelationshipType type, User user) {
 		TypedQuery<User> query = em.createNamedQuery(Queries.USER_FIND_BY_RELATIONSHIP_TYPE,
@@ -113,6 +134,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
 		return query.getResultList();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public UserRelationship saveRelationship(UserRelationship relationship) {
 		UserRelationship saved = relationship;
@@ -124,6 +148,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
 		return saved;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public User saveUser(User user) {
 		User saved = user;
