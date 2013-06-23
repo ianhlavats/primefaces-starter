@@ -17,7 +17,7 @@
 			<f:event type="preRenderView" listener="#{eventController.init}" />
 			<f:event type="preRenderView" listener="#{chartController.init}" />
 		</f:metadata>
-		<pm:page title="Welcome">
+		<pm:page title="Welcome" id="mobilePage">
 			<f:facet name="postinit">
 				<h:outputScript library="primefaces" name="gmap/gmap.js" />
 				<script type="text/javascript" 
@@ -151,7 +151,7 @@
 						<p:password id="password" label="Password: " 
 						            value="#{credentials.password}" />
 						<p:commandLink value="Forgot your password?" />
-						<p:commandButton value="Login" update=":members" 
+						<p:commandButton value="Login" update=":mobilePage" 
 						                 action="#{loginController.loginMobile}" />
 					</h:form>
 				</pm:content>
@@ -459,6 +459,7 @@
 				</pm:header>
 				<pm:content> 
                 	<h:form>
+                    	<p:poll update=":contacts" interval="10" />
                         <p:accordionPanel id="contactsPanel">
                             <p:tab title="Friends">
                                 <mycompany:contactList header="Friends" mobile="true" 

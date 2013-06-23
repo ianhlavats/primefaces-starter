@@ -109,11 +109,13 @@ public class LoginController extends AbstractController {
 	}
 
 	public String logout() {
+		activeUsers.remove(getLoggedInUser());
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return "login";
 	}
 
 	public String logoutMobile() {
+		activeUsers.remove(getLoggedInUser());
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return "pm:main?reverse=true";
 	}
