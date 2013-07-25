@@ -16,12 +16,6 @@
 			<id>codehaus-snapshots</id>
 			<url>http://snapshots.repository.codehaus.org</url>
 		</repository>
-		<repository>
-			<id>jboss-public-repository-group</id>
-			<name>JBoss Public Maven Repository Group</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-			<layout>default</layout>
-		</repository>
 	</repositories>
 	<dependencies>
 
