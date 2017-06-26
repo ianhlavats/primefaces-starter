@@ -26,10 +26,6 @@ package com.mycompany.service;
 
 import java.util.List;
 
-import javax.enterprise.event.Observes;
-import javax.servlet.ServletContext;
-
-import com.mycompany.lifecycle.Initialized;
 import com.mycompany.model.City;
 import com.mycompany.model.Country;
 import com.mycompany.model.ProvinceState;
@@ -135,16 +131,5 @@ public interface CountryService {
 	 * @return A List of ProvinceState objects.
 	 */
 	List<ProvinceState> getProvinceStates();
-
-	/**
-	 * Invoked during the {@link ServletContext} initialization to populate the
-	 * database with sample data.
-	 * 
-	 * @param context
-	 *            The {@link ServletContext} object.
-	 * @throws Exception
-	 *             If something goes wrong.
-	 */
-	void init(@Observes @Initialized ServletContext context) throws Exception;
 
 }

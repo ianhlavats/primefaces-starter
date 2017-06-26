@@ -53,7 +53,7 @@ import com.mycompany.util.Queries;
  * 
  */
 @Entity
-@Table(	name = "USERS",
+@Table(	name = "Users",
 		uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
 				@UniqueConstraint(columnNames = "emailaddress") })
 @NamedQueries({

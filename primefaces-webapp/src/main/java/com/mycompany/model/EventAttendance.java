@@ -40,7 +40,8 @@ import com.mycompany.util.Queries;
  * 
  */
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "event", "user" }))
+//@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "event", "user" }))
+@Table
 @NamedQueries({
 		@NamedQuery(name = Queries.EVENT_ATTENDANCE_FIND_BY_USER_AND_EVENT,
 					query = "select e from EventAttendance e where e.user = ?1 and e.event = ?2"),

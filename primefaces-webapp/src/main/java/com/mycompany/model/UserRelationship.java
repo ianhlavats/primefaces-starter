@@ -38,8 +38,9 @@ import javax.persistence.UniqueConstraint;
  * 
  */
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "from_user", "to_user",
-		"relationshipType" }))
+//@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "fromUser", "toUser",
+//		"relationshipType" }))
+@Table
 public class UserRelationship extends AbstractEntity {
 
 	/**
