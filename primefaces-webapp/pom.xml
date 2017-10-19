@@ -196,11 +196,11 @@
 						<configuration>
 							<encoding>UTF-8</encoding>
 							<!-- Generate JPA metamodel classes in source folder -->
-							<outputDirectory>src/main/java</outputDirectory>
+							<outputDirectory>src/main/generated</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>                        
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.4.1</version>
@@ -212,9 +212,12 @@
 								<include>**/*_.java</include>
 							</includes>
 						</fileset>
+                        <fileset>
+                           <directory>../${project.artifactId}/src/main/generated</directory>                                                        
+                        </fileset>
 					</filesets>
 				</configuration>
-			</plugin>
+			</plugin>                        
 		</plugins>
 		<pluginManagement>
 			<plugins>
