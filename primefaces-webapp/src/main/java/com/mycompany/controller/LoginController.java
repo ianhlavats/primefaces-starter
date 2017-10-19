@@ -38,6 +38,7 @@ import com.mycompany.model.ActiveUsers;
 import com.mycompany.model.Credentials;
 import com.mycompany.model.User;
 import com.mycompany.service.UserService;
+import javax.inject.Inject;
 
 /**
  * Controller class for desktop and mobile login functionality.
@@ -48,7 +49,7 @@ import com.mycompany.service.UserService;
 @ManagedBean
 @ViewScoped
 public class LoginController extends AbstractController {
-
+    
 	/**
 	 * 
 	 */
@@ -57,7 +58,7 @@ public class LoginController extends AbstractController {
 	@ManagedProperty(value = "#{activeUsers}")
 	private ActiveUsers activeUsers;
 
-	@ManagedProperty(value = "#{credentials}")
+	@Inject
 	private Credentials credentials;
 
 	@ManagedProperty(value = "#{userService}")
@@ -122,10 +123,6 @@ public class LoginController extends AbstractController {
 
 	public void setActiveUsers(ActiveUsers activeUsers) {
 		this.activeUsers = activeUsers;
-	}
-
-	public void setCredentials(Credentials credentials) {
-		this.credentials = credentials;
 	}
 
 	public void setUserService(UserService userService) {
